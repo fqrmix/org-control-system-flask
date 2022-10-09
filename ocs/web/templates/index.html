@@ -7,9 +7,28 @@
 		<link href="/css/main.css" rel="stylesheet">
 		<link href="/css/jqbtk.min.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.min.js"></script>
 	</head>
 
 	<body>
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+				var socket = io.connect('http://127.0.0.1:5050');
+
+				socket.on('connect', function() {
+					console.log('User has connected!');
+					socket.emit('server');
+				});
+
+				socket.on('update_current_id', function(msg) {     
+					let current_id = msg['current_id'];
+					console.log(current_id);
+					document.getElementById("current_id").innerHTML = current_id;
+				});
+			});
+		</script>
+		
 		<main role="main">
 			<div class="container" id="dashboard-container">
 
@@ -23,14 +42,19 @@
 							});
 						</script>
 					</div>
-					<div class="col-6 __bordered __mainblock exmp3" id="camera_feed"> 
+					<div class="col-6 __bordered __mainblock exmp3" id="camera_feed">
+						<img id="img" src = "{{ url_for('video_feed') }}">
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="col-6 __bordered">
 						<h2>Some dashboard 1></h2>
-						<div id="dashboard1_feed"></div>
+						<div id="dashboard1_feed">
+							<div id="current_id">
+								
+							</div>
+						</div>
 					</div>
 					<div class="col-6 __bordered">
 						<h2>Some dashboard 2</h2>

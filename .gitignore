@@ -1,1 +1,4 @@
 *env
+ocs/cameramodule/__pycache__*
+ocs/cameramodule/photos/*
+*.pyc
