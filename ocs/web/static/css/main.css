@@ -1,0 +1,28 @@
+.container {
+	height: 100%;
+}
+
+.row {
+	justify-content: center;
+	flex-wrap: nowrap;
+	height: 50%;
+}
+
+.__bordered {
+	border: black 1px solid;
+	margin: 3px;
+	display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.exmp3 img {
+	object-fit: cover;
+	width: 100%;
+	margin: 5px;
+}
+
+.__mainblock {
+	display: flex;
+	align-items: center;
+}
