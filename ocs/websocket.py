@@ -19,6 +19,7 @@ def sendmessage():
                     'access_level': pass_key.access_level,
                     'pin_code': pass_key.pin_code
                 }
+            socketio.emit('update_log', f'{user.username} was on camera!')
         else:
             json_info = {
                     'current_name': 'Unknown',
@@ -27,7 +28,7 @@ def sendmessage():
                     'pin_code': 'None'
                 }
         socketio.emit('update_dashboard_1', json_info)
-        socketio.sleep(0.5)
+        socketio.sleep(1)
 
 @socketio.on('disconnect')
 def handle_close():

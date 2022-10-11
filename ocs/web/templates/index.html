@@ -13,7 +13,7 @@
 	<body>
 		<script type="text/javascript">
 			document.addEventListener("DOMContentLoaded", function() {
-				
+
 				const socket = io.connect('http://127.0.0.1:5050');
 				socket.on('connect', function() {
 					console.log('User has connected!');
@@ -24,19 +24,34 @@
 				const age_element = document.getElementById("user_age")
 				const access_level_element = document.getElementById("access_level")
 				const pin_code_element = document.getElementById("user_pin_code")
+				const log_window = document.getElementById("log_window")
+				const log_messages_element = document.getElementById("log_messages")
 
 				socket.on('update_dashboard_1', function(msg) {
-					user_name_element.innerHTML = `Name: ${msg['current_name']}`;
-					age_element.innerHTML = `Age: ${msg['age']}`;
-					access_level_element.innerHTML = `Access level: ${msg['access_level']}`;
-					pin_code_element.innerHTML = `Pin code: ${msg['pin_code']}`;
+					user_name_element.innerHTML = `Name: ${msg.current_name}`;
+					age_element.innerHTML = `Age: ${msg.age}`;
+					access_level_element.innerHTML = `Access level: ${msg.access_level}`;
+					pin_code_element.innerHTML = `Pin code: ${msg.pin_code}`;
+				});
+
+				socket.on('update_log', function(msg){
+					let scroll_flag = false
+					if (log_window.scrollHeight - log_window.scrollTop == log_window.offsetHeight) {
+						scroll_flag = true
+					}
+					const newLI = document.createElement('li');
+					newLI.appendChild(document.createTextNode(`${msg}`));
+					log_messages_element.appendChild(newLI);
+					if (scroll_flag) {
+						log_window.scrollTop = log_window.scrollHeight;
+					}
+					
 				});
 			});
 		</script>
 		
 		<main role="main">
 			<div class="container" id="dashboard-container">
-
 				<div class="row" id="door-row">
 					<div class="col-6 __bordered">
 						<h2>pin_code_form></h2>
@@ -54,7 +69,7 @@
 
 				<div class="row">
 					<div class="col-6 __bordered">
-						<h2>Some dashboard 1></h2>
+						<h2>Some dashboard 1</h2>
 						<div id="dashboard1_feed">
 							<ul id="dashboard_info">
 								<p>Now on camera:</p>
@@ -68,6 +83,16 @@
 					<div class="col-6 __bordered">
 						<h2>Some dashboard 2</h2>
                         <div id="dashboard2_feed"></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-12 __bordered">
+						<h2>Log</h2>
+						<div class="log_window" id="log_window">
+						<ul id="log_messages">
+						</ul>
+						</div>
 					</div>
 				</div>
 			</div>
