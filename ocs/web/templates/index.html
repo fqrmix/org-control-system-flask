@@ -12,19 +12,24 @@
 
 	<body>
 		<script type="text/javascript">
-			$(document).ready(function() {
-
-				var socket = io.connect('http://127.0.0.1:5050');
-
+			document.addEventListener("DOMContentLoaded", function() {
+				
+				const socket = io.connect('http://127.0.0.1:5050');
 				socket.on('connect', function() {
 					console.log('User has connected!');
 					socket.emit('server');
 				});
 
-				socket.on('update_current_id', function(msg) {     
-					let current_id = msg['current_id'];
-					console.log(current_id);
-					document.getElementById("current_id").innerHTML = current_id;
+				const user_name_element = document.getElementById("user_name")
+				const age_element = document.getElementById("user_age")
+				const access_level_element = document.getElementById("access_level")
+				const pin_code_element = document.getElementById("user_pin_code")
+
+				socket.on('update_dashboard_1', function(msg) {
+					user_name_element.innerHTML = `Name: ${msg['current_name']}`;
+					age_element.innerHTML = `Age: ${msg['age']}`;
+					access_level_element.innerHTML = `Access level: ${msg['access_level']}`;
+					pin_code_element.innerHTML = `Pin code: ${msg['pin_code']}`;
 				});
 			});
 		</script>
@@ -51,9 +56,13 @@
 					<div class="col-6 __bordered">
 						<h2>Some dashboard 1></h2>
 						<div id="dashboard1_feed">
-							<div id="current_id">
-								
-							</div>
+							<ul id="dashboard_info">
+								<p>Now on camera:</p>
+								<li id="user_name"></li>
+								<li id="user_age"></li>
+								<li id="access_level"></li>
+								<li id="user_pin_code"></li>
+							</ul>
 						</div>
 					</div>
 					<div class="col-6 __bordered">

@@ -84,7 +84,7 @@ class Camera:
 
             # Отображение результатов
             for (top, right, bottom, left), object_id in zip(face_locations, face_ids):
-                # Возврат размера исходного изображения
+                # Возврат исходного размера изображения
                 top *= 4
                 right *= 4
                 bottom *= 4

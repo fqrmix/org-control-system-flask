@@ -3,9 +3,12 @@
 #############################
 
 
+from ast import Pass
 import os
 from flask import Flask
 from flask_socketio import SocketIO
+from .database import db
+from .models import Users, PassKeys
 
 
 app = Flask(__name__,
@@ -15,5 +18,8 @@ app = Flask(__name__,
 
 app.config.from_object(os.environ['APP_SETTINGS'])
 
-socketio = SocketIO(app, cors_allowed_origins='*')
+db.init_app(app)
+with app.app_context():
+    db.create_all()
 
+socketio = SocketIO(app, cors_allowed_origins='*')

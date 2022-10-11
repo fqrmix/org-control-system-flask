@@ -1,16 +1,31 @@
-from flask_sqlalchemy import SQLAlchemy
+from . import database
 
-model = SQLAlchemy.Model
+class Users(database.db.Model):
+    id = database.db.Column(database.db.Integer, primary_key = True)
+    username = database.db.Column(database.db.String(80), unique=True)
+    age = database.db.Column(database.db.Integer)
+    pass_key = database.db.relationship('PassKeys', backref='users', lazy=True)
 
-class User(model):
-    id = model.Column(model.Integer, primary_key = True)
-    username = model.Column(model.String(80), unique=True)
-    access_level = model.Column(model.Integer, unique=True)
-
-
-    def __init__(self, username, access_level) -> None:
+    def __init__(self, username, age) -> None:
         self.username = username
-        self.access_level = access_level
+        self.age = age
 
     def __repr__(self) -> str:
         return f'<User {self.username}>'
+
+class PassKeys(database.db.Model):
+    id = database.db.Column(database.db.Integer, primary_key = True)
+    user_id = database.db.Column(
+        database.db.Integer,
+        database.db.ForeignKey('users.id'),
+        nullable=False)
+    access_level = database.db.Column(database.db.Integer)
+    pin_code = database.db.Column(database.db.Integer)
+    
+    def __init__(self, user_id, access_level, pin_code) -> None:
+        self.user_id = user_id
+        self.access_level = access_level
+        self.pin_code = pin_code
+
+    def __repr__(self) -> str:
+        return f'<Pass {self.id} for user {self.user_id}>'

@@ -2,3 +2,5 @@
 ocs/cameramodule/__pycache__*
 ocs/cameramodule/photos/*
 *.pyc
+*.db
+*.DS_Store
