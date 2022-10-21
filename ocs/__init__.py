@@ -2,7 +2,7 @@
 ######## APP Factory ########
 #############################
 
-
+from dotenv import load_dotenv
 from ast import Pass
 import os
 from flask import Flask
@@ -16,6 +16,7 @@ app = Flask(__name__,
             static_folder='web/static',
             template_folder='web/templates')
 
+load_dotenv()
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 db.init_app(app)

@@ -12,8 +12,14 @@
 
 	<body>
 		<script type="text/javascript">
+			function getCurrentTime() {
+				const today = new Date();
+				const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+				const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+				const dateTime = date + ' ' + time;
+				return dateTime
+			}
 			document.addEventListener("DOMContentLoaded", function() {
-
 				const socket = io.connect('http://127.0.0.1:5050');
 				socket.on('connect', function() {
 					console.log('User has connected!');
@@ -39,9 +45,18 @@
 					if (log_window.scrollHeight - log_window.scrollTop == log_window.offsetHeight) {
 						scroll_flag = true
 					}
-					const newLI = document.createElement('li');
-					newLI.appendChild(document.createTextNode(`${msg}`));
-					log_messages_element.appendChild(newLI);
+					if (log_messages_element.childElementCount == 0) {
+						const newLI = document.createElement('li');
+						newLI.appendChild(document.createTextNode(`[${getCurrentTime()}] ${msg}`));
+						log_messages_element.appendChild(newLI);
+					} else {
+						const lastChildMsg = log_messages_element.lastElementChild.innerHTML;
+						if (lastChildMsg != msg){
+							const newLI = document.createElement('li');
+							newLI.appendChild(document.createTextNode(`[${getCurrentTime()}] ${msg}`));
+							log_messages_element.appendChild(newLI);
+						}
+					}
 					if (scroll_flag) {
 						log_window.scrollTop = log_window.scrollHeight;
 					}
