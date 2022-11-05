@@ -32,3 +32,11 @@
 	height: 300px;
 	overflow-y: auto;
 }
+
+#pin_code_form_button {
+	cursor: pointer;
+	text-align: center;
+	border: black 1px solid;
+	width: 100px;
+	height: 30px;
+}

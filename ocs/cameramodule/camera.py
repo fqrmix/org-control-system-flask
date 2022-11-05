@@ -13,7 +13,7 @@ class Camera:
 
     def connect(self, known_face_encodings, known_face_ids, camera_id):
         """
-        Функция подключения к камере.
+        Метод подключения к камере.
 
             *args:
                 known_face_encodings:   Энкодинги известных программе лиц.
@@ -22,8 +22,7 @@ class Camera:
 
             *return:                    yield (b'--frame\r\n'
                                             b'Content-Type: video/jpeg\r\n\r\n' + frame + b'\r\n')
-                                        
-                                        где frame - JPG изображения, в byte-формате. 
+                                        frame - JPG изображения, в byte-формате. 
         """
         video_capture = cv2.VideoCapture(camera_id)
         print('Started connect...')

@@ -8,17 +8,27 @@
 		<link href="/css/jqbtk.min.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/hash-wasm"></script>
 	</head>
 
 	<body>
+		<!-- SocketIO Script -->
 		<script type="text/javascript">
 			function getCurrentTime() {
 				const today = new Date();
-				const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+				const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 				const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 				const dateTime = date + ' ' + time;
 				return dateTime
 			}
+
+			// Hash md5 function
+			function hashCode(str) {
+				return str.split('').reduce((prevHash, currVal) =>
+					(((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
+			}
+
+			// Updating fields
 			document.addEventListener("DOMContentLoaded", function() {
 				const socket = io.connect('http://127.0.0.1:5050');
 				socket.on('connect', function() {
@@ -51,7 +61,9 @@
 						log_messages_element.appendChild(newLI);
 					} else {
 						const lastChildMsg = log_messages_element.lastElementChild.innerHTML;
-						if (lastChildMsg != msg){
+						console.log('last child: ' + lastChildMsg)
+						console.log('msg: ' + msg)
+						if (!lastChildMsg.includes(msg)){
 							const newLI = document.createElement('li');
 							newLI.appendChild(document.createTextNode(`[${getCurrentTime()}] ${msg}`));
 							log_messages_element.appendChild(newLI);
@@ -62,6 +74,26 @@
 					}
 					
 				});
+
+				socket.on('send_success_message', function() {
+					alert('Дверь была успешно открыта!')
+				});
+
+				socket.on('send_fail_message', function(error) {
+					alert(`Не удалось открыть дверь! Причина: ${error.msg}`)
+				});
+
+			// Send pin code from data to server
+			const pin_code_form_input = document.getElementById("pin_code_from")
+			const pin_code_form_button = document.getElementById("pin_code_form_button")
+			pin_code_form_button.onclick = async function (data) {
+				data = {
+					"pin_code": await hashwasm.md5(pin_code_form_input.value),
+					"door": 'main_door'
+				}
+				console.log(data)
+				socket.emit('form_data', data);
+			};
 			});
 		</script>
 		
@@ -70,12 +102,18 @@
 				<div class="row" id="door-row">
 					<div class="col-6 __bordered">
 						<h2>pin_code_form></h2>
-						<p><input type="tel" class="keyboard form-control" id="telephone-keypad-demo"></p>
-						<script>
-							$(function(){
-								$('#telephone-keypad-demo').keyboard();
-							});
-						</script>
+						<form>
+							<p><input type="tel" class="keyboard form-control" id="pin_code_from"></p>
+							<script>
+								// Render keyboard
+								$(function(){
+									$('#pin_code_from').keyboard();
+								});
+							</script>
+							<p><div id="pin_code_form_button">Send</div></p>
+							<script>
+							</script>
+						</form>
 					</div>
 					<div class="col-6 __bordered __mainblock exmp3" id="camera_feed">
 						<img id="img" src = "{{ url_for('video_feed') }}">
