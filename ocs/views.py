@@ -15,7 +15,7 @@ def video_feed():
         main_camera.connect(
             known_face_encodings=known_face_encodings_new,
             known_face_ids=known_face_ids,
-            camera_id=0
+            camera_id=1
         ), 
         mimetype='multipart/x-mixed-replace; boundary=frame')
 

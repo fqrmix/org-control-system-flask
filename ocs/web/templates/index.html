@@ -51,6 +51,20 @@
 					pin_code_element.innerHTML = `Pin code: ${msg.pin_code}`;
 				});
 
+				let employees_count = 0
+				const organization_dashboard_element = document.getElementById("dashboard2_info");
+				const organization_employees_count_element = document.getElementById("employees_count");
+				socket.on('update_dashboard_2', function(employees_list) {
+					employees_count = employees_list.length
+					organization_dashboard_element.innerHTML = '';
+					employees_list.forEach(function(employee) {
+						const newLI = document.createElement('li');
+						newLI.appendChild(document.createTextNode(`[In: ${employee.time_of_arrival}] ${employee.username}`));
+						organization_dashboard_element.appendChild(newLI);
+					});
+					organization_employees_count_element.textContent = employees_count.toString();
+				});
+
 				socket.on('update_log', function(msg){
 					let scroll_flag = false
 					if (log_window.scrollHeight - log_window.scrollTop == log_window.offsetHeight) {
@@ -62,8 +76,6 @@
 						log_messages_element.appendChild(newLI);
 					} else {
 						const lastChildMsg = log_messages_element.lastElementChild.innerHTML;
-						console.log('last child: ' + lastChildMsg)
-						console.log('msg: ' + msg)
 						if (!lastChildMsg.includes(msg)){
 							const newLI = document.createElement('li');
 							newLI.appendChild(document.createTextNode(`[${getCurrentTime()}] ${msg}`));
@@ -76,7 +88,7 @@
 					
 				});
 
-				socket.on('send_success_message', function() {
+				socket.on('send_success_message', function(username) {
 					alert('Дверь была успешно открыта!')
 				});
 
@@ -92,7 +104,6 @@
 					"pin_code": await hashwasm.md5(pin_code_form_input.value),
 					"door": door_type
 				}
-				console.log(data)
 				socket.emit('form_data', data);
 			};
 			});
@@ -136,7 +147,15 @@
 					</div>
 					<div class="col-6 __bordered">
 						<h2>Some dashboard 2</h2>
-                        <div id="dashboard2_feed"></div>
+                        <div id="dashboard2_feed" class="row">
+							<ul id="dashboard2_info" class="col-6">
+								<h4>Now in organization:</h4>
+							</ul>
+							<div id="dashboard2_right_side" class="col-6">
+								<h4>Employees count</h4>
+								<p id="employees_count"></p>
+							</div>
+						</div>
 					</div>
 				</div>
 

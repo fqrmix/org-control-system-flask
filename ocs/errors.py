@@ -20,3 +20,7 @@ class UnknownUser(DoorOpeningError):
 class AccessError(DoorOpeningError):
     def __init__(self) -> None:
         super().__init__('У пользователя недостаточный уровень доступа для открытия двери!')
+
+class AlreadyInside(DoorOpeningError):
+    def __init__(self) -> None:
+         super().__init__('Пользователь уже находится внутри здания!')

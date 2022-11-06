@@ -1,19 +1,42 @@
 import hashlib
+import datetime
 from ocs import socketio
 from .cameramodule import main_camera
 from .models import Users, PassKeys
 from .errors import (DoorOpeningError, UnknownUser,
-                    AccessError, IncorrectPassword)
+                    AccessError, IncorrectPassword, AlreadyInside)
 
 class AccessLevel:
     data = {
-        'main_door': 3,
+        'main_door': 0,
         'server_room_door': 6
     }
+
+class OrganizationUnit:
+    def __init__(self) -> None:
+        self.employees_list = dict()
+
+    def update_list(self, user) -> None:
+        current_user = dict()
+        current_user['username'] = user.username
+        current_user['time_of_arrival'] = datetime.datetime.now().strftime("%H:%M:%S")
+        self.employees_list[user.id] = current_user
+        
+    def get_state(self):
+        return self.employees_list
+
+    def is_user_inside(self, user):
+        if user.id in self.employees_list:
+            return True
+        return False
+
+
+my_organization = OrganizationUnit()
 
 @socketio.on('connect')
 def handle_connect():
     print('User has connected')
+    socketio.emit('update_dashboard_2', list(my_organization.get_state().values()))
 
 @socketio.on('server')
 def send_message():
@@ -54,8 +77,13 @@ def handle_form_input(client_data):
                     socketio.emit('update_log', f"[{client_data['door']}] {current_user.username} trying to open door with not enough access level!")
                     raise AccessError
                 else:
-                    socketio.emit('update_log', f"[{client_data['door']}] {current_user.username} entered correct pin-code!")
-                    socketio.emit('send_success_message')
+                    if my_organization.is_user_inside(current_user):
+                        raise AlreadyInside
+                    else:
+                        my_organization.update_list(current_user)
+                        socketio.emit('update_log', f"[{client_data['door']}] {current_user.username} entered correct pin-code!")
+                        socketio.emit('send_success_message')
+                        socketio.emit('update_dashboard_2', list(my_organization.get_state().values()))
             else:
                 socketio.emit('update_log', f"[{client_data['door']}] {current_user.username} entered incorrect pin-code!")
                 raise IncorrectPassword
