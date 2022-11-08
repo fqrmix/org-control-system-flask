@@ -3,7 +3,6 @@
 #############################
 
 from dotenv import load_dotenv
-from ast import Pass
 import os
 from flask import Flask
 from flask_socketio import SocketIO

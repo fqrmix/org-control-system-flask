@@ -33,7 +33,7 @@
 	overflow-y: auto;
 }
 
-#pin_code_form_button {
+.form_button {
 	cursor: pointer;
 	text-align: center;
 	border: black 1px solid;
