@@ -1,8 +1,9 @@
 import hashlib
+import asyncio
 from ocs import socketio
 from .cameramodule import main_camera
 from .models import Users, PassKeys
-from .units import OrganizationUnit, Main, get_current_unit
+from .units import get_current_unit
 from .errors import (DoorError, UnknownUser, NotInside,
                     AccessError, IncorrectPassword, AlreadyInside)
 

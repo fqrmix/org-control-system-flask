@@ -1,4 +1,5 @@
 from ocs import socketio
+import asyncio
 import datetime
 
 class Door:
@@ -7,7 +8,16 @@ class Door:
 
     def open(self):
         socketio.emit('send_success_message')
-    
+
+        async def async_coroutine():
+            await asyncio.sleep(5)
+            self.close()
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        coroutine = async_coroutine()
+        loop.run_until_complete(coroutine)
+          
     def close(self):
         socketio.emit('door_closed_message')
 
@@ -25,7 +35,6 @@ class OrganizationUnit:
             self.employees_list[user.id] = current_user
         if direction == 'out':
             self.employees_list.pop(user.id)
-
             
     def get_state(self):
         return self.employees_list
