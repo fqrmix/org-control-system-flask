@@ -8,7 +8,6 @@ from flask import Flask
 from flask_socketio import SocketIO
 from .database import db
 from .models import Users, PassKeys
-import hashlib
 
 
 app = Flask(__name__,

@@ -17,7 +17,7 @@ function hashCode(str) {
 document.addEventListener("DOMContentLoaded", function() {
     const unit_type_p_element = document.getElementById("unit_type_p")
     unit_type_p_element.textContent += unit_type + ":"
-    const socket = io.connect('http://127.0.0.1:5051');
+    const socket = io.connect(`http://127.0.0.1:5051/`);
     socket.on('connect', function() {
         console.log('User has connected!');
         socket.emit('server', unit_type);

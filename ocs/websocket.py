@@ -44,7 +44,7 @@ def handle_form_in(client_data):
             socketio.emit('update_log', f"[{client_data['unit']}] Unknown person trying to enter pin-code!")
             raise UnknownUser
         else:
-            pass_key = PassKeys.query.filter_by(user_id = current_user.id).first()
+            pass_key = PassKeys.query.filter_by(id = current_user.pass_key_id).first()
             pin_code = pass_key.pin_code
             if pin_code == client_data['pin_code']:
                 if unit.access_level > pass_key.access_level:
