@@ -9,13 +9,21 @@ from . import app
 def index():
     return render_template('index.html')
 
+@app.route('/server_room/')
+def server():
+    return render_template('server_room.html')
+
+@app.route('/accounting_room/')
+def accounting():
+    return render_template('accounting_room.html')
+
 @app.route('/video_feed')
 def video_feed():
     return Response(
         main_camera.connect(
             known_face_encodings=known_face_encodings_new,
             known_face_ids=known_face_ids,
-            camera_id=1
+            camera_id=0
         ), 
         mimetype='multipart/x-mixed-replace; boundary=frame')
 

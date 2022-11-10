@@ -9,17 +9,16 @@ class Door:
     def open(self):
         socketio.emit('send_success_message')
 
+    def close(self):
         async def async_coroutine():
             await asyncio.sleep(5)
-            self.close()
+            socketio.emit('door_closed_message')
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         coroutine = async_coroutine()
         loop.run_until_complete(coroutine)
-          
-    def close(self):
-        socketio.emit('door_closed_message')
+        
 
 class OrganizationUnit:
     def __init__(self, access_level) -> None:

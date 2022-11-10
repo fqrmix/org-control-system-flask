@@ -24,16 +24,19 @@ def create_encodings(path, start, existedData = None):
         # в dlib ordering (RGB)
         image = cv2.imread(imagePath)
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        #используем библиотеку Face_recognition для обнаружения лиц
-        boxes = face_recognition.face_locations(rgb,model='hog')
+        # используем библиотеку Face_recognition для обнаружения лиц
+        boxes = face_recognition.face_locations(rgb, model='hog')
         # вычисляем эмбеддинги для каждого лица
         encodings = face_recognition.face_encodings(rgb, boxes)
         # loop over the encodings
         for encoding in encodings:
             knownEncodings.append(encoding)
             knownIds.append(id)
-    # сохраним эмбеддинги вместе с их именами в формате словаря
-    data = {"encodings": knownEncodings, "ids": knownIds}
+    # сохраним эмбеддинги вместе с их ID в формате словаря
+    data = {
+        "encodings": knownEncodings, 
+        "ids": knownIds
+    }
     if existedData is not None:
         unitedData = {**data, **existedData}
         data = unitedData
@@ -42,17 +45,10 @@ def create_encodings(path, start, existedData = None):
         f.write(pickle.dumps(data))
 
 def read_encodings(path: str):
-    data = pickle.loads(open(path, "rb").read())
-    return data
+    return pickle.loads(open(path, "rb").read())
 
 path = ROOT_DIR + '/face_enc'
-
-create_encodings(
-    path=path,
-    start=1
-)
-
-
+create_encodings(path=path, start=1)
 data = read_encodings(path)
 known_face_encodings_new = data['encodings']
 known_face_ids = data['ids']

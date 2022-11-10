@@ -25,7 +25,7 @@ class Camera:
                                         frame - JPG изображения, в byte-формате. 
         """
         video_capture = cv2.VideoCapture(camera_id)
-        print('Started connect...')
+
         # Инициализация изначальных параметров
         face_locations = []
         face_encodings = []
@@ -48,7 +48,7 @@ class Camera:
                     isOnCam = True
             # Обрабатываем только 1 кадр, для увеличения производительности.
             if process_this_frame:
-                # Для более быстрого распознования лиц поделим размер кадра на
+                # Для более быстрого распознования лиц поделим размер кадра на 4
                 small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
                 cv2.putText(frame, str(isOnCam) + ' ' + whoIs, (100, 100), cv2.FONT_HERSHEY_DUPLEX, 1.0, (255, 255, 255), 1)
                 # Конвертация из BGR цветов (OpenCV) в RGB цвета (face_recognition)
@@ -63,20 +63,16 @@ class Camera:
                     # Сравниваем найденные лица с известными
                     matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                     object_id = "Unknown"
-                    
-                    # # If a match was found in known_face_encodings, just use the first one.
-                    # if True in matches:
-                    #     first_match_index = matches.index(True)
-                    #     id = known_face_ids[first_match_index]
 
-                    # Считаем минимальное расстояние между найденным лицом и известным.
+                    # Считаем минимальное расстояние между найденным лицом и известным
                     face_distances = face_recognition.face_distance(
-                            known_face_encodings, face_encoding)
+                            known_face_encodings, face_encoding
+                    )
                     best_match_index = np.argmin(face_distances)
                     if matches[best_match_index]:
                         object_id = known_face_ids[best_match_index]
                     # Обрабатываем не только известные лица, для отображения в dashboard
-                    face_ids.append(object_id) 
+                    face_ids.append(object_id)
 
             process_this_frame = not process_this_frame
 
@@ -92,29 +88,33 @@ class Camera:
                 # Отрисовка квадратов вокруг лиц
                 cv2.rectangle(frame, (left, top), (right, bottom), 
                         (0, 0, 255), 2
-                        )
+                )
 
                 # Отрисовка ID около квадрата
                 cv2.rectangle(frame, (left, bottom - 35), 
                             (right, bottom), (0, 0, 255), 
                             cv2.FILLED
-                            )
+                )
                 font = cv2.FONT_HERSHEY_DUPLEX
                 cv2.putText(frame, object_id, 
                         (left + 6, bottom - 6), font, 1.0, 
                         (255, 255, 255), 1
-                        )
+                )
 
             # Возвращаем полученное изображение
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                 b'Content-Type: video/jpeg\r\n\r\n' + frame + b'\r\n')
+            
+            # Если на камере никого - присваиваем id 6
             if not isOnCam:
                 self.current_id = 6
+            
+            # Если на камере Unknown - присваиваем id 0
             elif isOnCam and object_id == 'Unknown' and len(face_ids) < 2:
                 self.current_id = 0
+
+            # Если на камере не Unknown - присваиваем ID известного лица
             elif object_id != 'Unknown':
-                # video_capture.release()
-                # cv2.destroyAllWindows()
                 self.current_id = int(object_id)
