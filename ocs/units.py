@@ -3,6 +3,7 @@ import asyncio
 import datetime
 
 class Door:
+    """ Базовый класс двери в комнату """
     def __init__(self) -> None:
         pass
 
@@ -21,6 +22,7 @@ class Door:
         
 
 class OrganizationUnit:
+    """ Базовый класс юнита в организации """
     def __init__(self, access_level) -> None:
         self.door = Door()
         self.access_level = access_level
@@ -44,14 +46,19 @@ class OrganizationUnit:
         return False
 
 class Main(OrganizationUnit):
+    """
+        Класс основной комнаты (фактически - вся организация)
+    """
     def __init__(self) -> None:
         super().__init__(access_level=1)
 
     class ServerRoom(OrganizationUnit):
+        """ Класс серверной комнаты """
         def __init__(self) -> None:
             super().__init__(access_level=4)
 
     class AccountingRoom(OrganizationUnit):
+        """ Класс комнаты бухгалтерии """
         def __init__(self) -> None:
             super().__init__(access_level=6)
 

@@ -2,6 +2,12 @@ from . import database
 from wtforms_alchemy import ModelForm, ModelFormField
 
 class PassKeys(database.db.Model):
+    """
+        Модель для базы данных, содержащая информацию о пропусках.
+            *id - ID пропуска;
+            *access_level - Уровень доступа;
+            *pin_code - Пин-код
+    """
     id = database.db.Column(database.db.Integer, primary_key = True)
     access_level = database.db.Column(database.db.Integer, nullable=False)
     pin_code = database.db.Column(database.db.String(80), nullable=False)
@@ -10,6 +16,14 @@ class PassKeys(database.db.Model):
         return f'<Pass {self.id}>'
 
 class Users(database.db.Model):
+    """
+        Модель для базы данных, содержащая информацию о пользователях.
+            *id - ID пользователя;
+            *username - Имя пользователя;
+            *role - Должнсть пользователя;
+            *age - Возраст пользователя;
+            *pass_key_id - ID пропуска, наследованный из класса PassKeys.
+    """
     id = database.db.Column(database.db.Integer, primary_key = True)
     username = database.db.Column(database.db.String(80), nullable=False)
     role = database.db.Column(database.db.String(80), nullable=False)
