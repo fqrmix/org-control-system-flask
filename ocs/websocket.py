@@ -1,5 +1,3 @@
-import hashlib
-import asyncio
 from ocs import socketio
 from .cameramodule import main_camera
 from .models import Users, PassKeys
@@ -47,8 +45,8 @@ def handle_form_in(client_data):
             raise UnknownUser
         else:
             pass_key = PassKeys.query.filter_by(user_id = current_user.id).first()
-            pass_key_hash = hashlib.md5(str(pass_key.pin_code).encode("utf-8")).hexdigest()
-            if pass_key_hash == client_data['pin_code']:
+            pin_code = pass_key.pin_code
+            if pin_code == client_data['pin_code']:
                 if unit.access_level > pass_key.access_level:
                     socketio.emit('update_log', f"[{client_data['unit']}] {current_user.username} trying to open door with not enough access level!")
                     raise AccessError
@@ -60,6 +58,7 @@ def handle_form_in(client_data):
                         socketio.emit('update_log', f"[{client_data['unit']}] {current_user.username} entered correct pin-code!")
                         unit.door.open()
                         socketio.emit('update_dashboard_2', list(unit.get_state().values()))
+                        unit.door.close()
             else:
                 socketio.emit('update_log', f"[{client_data['unit']}] {current_user.username} entered incorrect pin-code!")
                 raise IncorrectPassword
@@ -82,6 +81,7 @@ def handle_form_out(client_data):
                 unit.update_list(current_user, direction='out')
                 socketio.emit('update_log', f"[{client_data['unit']}] {current_user.username} is out from room!")
                 socketio.emit('update_dashboard_2', list(unit.get_state().values()))
+                unit.door.close()
     except DoorError as error:
         socketio.emit('send_fail_message', error.reason)
 
