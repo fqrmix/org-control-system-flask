@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const user_name_element = document.getElementById("user_name")
     const age_element = document.getElementById("user_age")
     const access_level_element = document.getElementById("access_level")
+    const user_role_element = document.getElementById("user_role")
     const pin_code_element = document.getElementById("user_pin_code")
     const log_window = document.getElementById("log_window")
     const log_messages_element = document.getElementById("log_messages")
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
     socket.on('update_dashboard_1', function(msg) {
         user_name_element.innerHTML = `Name: ${msg.current_name}`;
         age_element.innerHTML = `Age: ${msg.age}`;
+        user_role_element.innerHTML = `Role: ${msg.role}`
         access_level_element.innerHTML = `Access level: ${msg.access_level}`;
         pin_code_element.innerHTML = `Pin code: ${msg.pin_code}`;
     });

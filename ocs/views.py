@@ -27,7 +27,7 @@ def video_feed():
         ), 
         mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route("/create_user", methods=["GET", "POST"])
+@app.route("/create_user/", methods=["GET", "POST"])
 def create_user():
     form = UsersForm(request.form)
     success = False
@@ -48,7 +48,7 @@ def create_user():
     return render_template("create.html", form=form, success=success)
 
 
-@app.route('/users')
+@app.route('/users/')
 def users():
     users = Users.query.all()
     u = [f'{user.__repr__()} with ID: {user.id}' for user in users]

@@ -25,6 +25,10 @@ class AlreadyInside(DoorError):
     def __init__(self) -> None:
          super().__init__('Пользователь уже находится внутри здания/комнаты!')
 
-class NotInside(DoorError):
+class NotInsideUnit(DoorError):
     def __init__(self) -> None:
-         super().__init__('Пользователь не находится внутри здания/комнаты!')
+         super().__init__('Пользователь не находится внутри комнаты!')
+
+class NotInsideMain(DoorError):
+    def __init__(self) -> None:
+         super().__init__('Пользователь не находится внутри главного здания!')
