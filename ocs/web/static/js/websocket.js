@@ -1,4 +1,3 @@
-
 function getCurrentTime() {
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -20,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const socket = io.connect(`http://127.0.0.1:5051/`);
     socket.on('connect', function() {
         console.log('User has connected!');
-        socket.emit('server', unit_type);
+        socket.emit('server', {unit_type: unit_type});
     });
 
     const user_name_element = document.getElementById("user_name")
@@ -30,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const pin_code_element = document.getElementById("user_pin_code")
     const log_window = document.getElementById("log_window")
     const log_messages_element = document.getElementById("log_messages")
-
+    
     socket.on('update_dashboard_1', function(msg) {
         user_name_element.innerHTML = `Name: ${msg.current_name}`;
         age_element.innerHTML = `Age: ${msg.age}`;
