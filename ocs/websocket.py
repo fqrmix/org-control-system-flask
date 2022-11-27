@@ -1,11 +1,11 @@
-from ocs import socketio
-from flask import request
-from .cameramodule import main_camera
-from .socket import socket_balancer
-from .models import Users, PassKeys
-from .units import get_current_unit
-from .errors import *
 import time
+from flask import request
+from ocs import socketio
+from ocs.cameramodule import main_camera
+from ocs.socket import socket_balancer
+from ocs.models import Users, PassKeys
+from ocs.units import get_current_unit
+from ocs.errors import *
 
 @socketio.on('connect')
 def handle_connect():
@@ -41,7 +41,7 @@ def send_message(data):
                         'pin_code': 'None'
                     }
             socketio.emit('update_dashboard_1', json_info)
-            time.sleep(1)
+            time.sleep(0.5)
 
 @socketio.on('form_data_in')
 def handle_form_in(client_data):

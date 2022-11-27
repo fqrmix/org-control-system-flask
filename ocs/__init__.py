@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 import os
 from flask import Flask
 from flask_socketio import SocketIO
-from .database import db
-from .models import Users, PassKeys
+from ocs.database import db
+from ocs.models import Users, PassKeys
 
 
 app = Flask(__name__,

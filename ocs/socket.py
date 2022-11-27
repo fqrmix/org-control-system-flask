@@ -1,4 +1,5 @@
 class SocketBalancer:
+    """ Класс для балансировки пользователей socket.io """
     def __init__(self) -> None:
         self.socket_list = dict()
         self.while_started = False
@@ -12,7 +13,6 @@ class SocketBalancer:
 
     def add_socket_connection(self, socket_id) -> bool:
         self.socket_list[socket_id] = True
-        self.last_socket_id = socket_id
         return self.socket_list[socket_id]
 
 socket_balancer = SocketBalancer()

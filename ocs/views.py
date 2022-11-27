@@ -1,7 +1,7 @@
 from flask import request, render_template, Response, jsonify
+from ocs import app, db
 from ocs.models import Users, PassKeys, UsersForm
 from ocs.cameramodule import main_camera, known_face_encodings_new, known_face_ids
-from . import app, db
 import hashlib
 
 

@@ -1,6 +1,7 @@
 from ocs import socketio
 import asyncio
 import datetime
+from ocs import models
 
 class Door:
     """ Базовый класс двери в комнату """
@@ -28,7 +29,7 @@ class OrganizationUnit:
         self.access_level = access_level
         self.employees_list = dict()
 
-    def update_list(self, user, direction: str) -> None:
+    def update_list(self, user: models.Users, direction: str) -> None:
         if direction == 'in':
             current_user = dict()
             current_user['username'] = user.username

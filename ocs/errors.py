@@ -1,7 +1,7 @@
 class DoorError(Exception):
     """
-        Base door opening exception
-        *args - reason
+        Базовый класс ошибки при взаимодействии с дверью.
+        :self.reason - причина ошибки
     """
     def __init__(self, *args: object) -> None:
             self.reason = args[0]
