@@ -4,7 +4,6 @@ from ocs.models import Users, PassKeys, UsersForm
 from ocs.cameramodule import main_camera, known_face_encodings_new, known_face_ids
 import hashlib
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -17,14 +16,15 @@ def server():
 def accounting():
     return render_template('accounting_room.html')
 
+
 @app.route('/video_feed')
 def video_feed():
     return Response(
         main_camera.connect(
             known_face_encodings=known_face_encodings_new,
             known_face_ids=known_face_ids,
-            camera_id=1
-        ), 
+            camera_id=0
+        ),
         mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/create_user/", methods=["GET", "POST"])
@@ -44,7 +44,6 @@ def create_user():
             db.session.add(user)
             db.session.commit()
             success = True
-
     return render_template("create.html", form=form, success=success)
 
 

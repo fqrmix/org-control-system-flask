@@ -56,19 +56,27 @@ class Main(OrganizationUnit):
     class ServerRoom(OrganizationUnit):
         """ Класс серверной комнаты """
         def __init__(self) -> None:
-            super().__init__(access_level=4)
+            super().__init__(access_level=6)
 
     class AccountingRoom(OrganizationUnit):
         """ Класс комнаты бухгалтерии """
         def __init__(self) -> None:
-            super().__init__(access_level=6)
+            super().__init__(access_level=4)
+
+class Organization:
+    def __init__(self) -> None:
+        self.main = Main()
+    
+    def get_state(self) -> dict:
+        result = dict()
+        for unit in units:
+            current_unit = units[unit]
+            result[unit] = current_unit.get_state()
+        return result
+
+
 
 def get_current_unit(unit_type: str) -> OrganizationUnit:
-    units = {
-        'main_room': main,
-        'server_room': server_room,
-        'accounting_room': accounting_room
-    }
     if unit_type not in units:
         raise KeyError
 
@@ -77,3 +85,11 @@ def get_current_unit(unit_type: str) -> OrganizationUnit:
 main = Main()
 server_room = main.ServerRoom()
 accounting_room = main.AccountingRoom()
+
+units = {
+    'main_room': main,
+    'server_room': server_room,
+    'accounting_room': accounting_room
+}
+
+organization = Organization()

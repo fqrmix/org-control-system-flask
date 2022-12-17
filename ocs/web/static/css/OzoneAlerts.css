@@ -1,0 +1,121 @@
+/* Styles the main div element  */
+.Ozone {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 350px;
+  max-width: 20%;
+  height: auto;
+  margin: 20px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-radius: 3px;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.75);
+  font-family: "Roboto";
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  animation: ozFadeIn ease 0.25s;
+  z-index: 999999;
+}
+
+/* Styles the div container for the icon */
+.OzoneIcon {
+  position: absolute;
+  left: 25px;
+}
+
+/* Styles the div container for the message */
+.OzoneMessage {
+  height: auto;
+  width: 80%;
+  overflow-wrap: break-word;
+}
+
+/* Styles the div container for the controls */
+.OzoneControls {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+/* Styles the buttons used for the dialog type */
+.OzoneBtnConfirm {
+  margin-right: 30px; 
+  transition: 0.3s;
+  border-radius: 2px;
+  border: none; 
+  padding: 8px;
+  padding-left: 15px; 
+  padding-right: 15px;
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
+
+.OzoneBtnConfirm:hover {
+  background-color: rgba(37, 155, 53, 0.75); 
+  color: white; 
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.OzoneBtnCancel {
+  margin-left: 30px;
+  transition: 0.3s;
+  border-radius: 2px;
+  border: none; 
+  padding: 8px;
+  padding-left: 15px; 
+  padding-right: 15px;
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
+
+.OzoneBtnCancel:hover {
+  background-color: rgba(155, 37, 37, 0.75);
+  color: white; 
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url(fonts/Roboto-Light.ttf);
+}
+
+/* Specifies animations used upon initial appearance, persisting and deletion of alert */
+@keyframes ozFadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ozFadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ozPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}

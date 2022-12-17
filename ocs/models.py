@@ -34,7 +34,6 @@ class Users(database.db.Model):
     def __repr__(self) -> str:
         return f'<User {self.username}>'
 
-
 class PassKeysForm(ModelForm):
     class Meta:
         model = PassKeys

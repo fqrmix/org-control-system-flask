@@ -4,7 +4,7 @@ from ocs import socketio
 from ocs.cameramodule import main_camera
 from ocs.socket import socket_balancer
 from ocs.models import Users, PassKeys
-from ocs.units import get_current_unit
+from ocs.units import get_current_unit, organization
 from ocs.errors import *
 
 @socketio.on('connect')
@@ -16,7 +16,7 @@ def handle_connect():
 @socketio.on('server')
 def send_message(data):
     unit = get_current_unit(data['unit_type'])
-    socketio.emit('update_dashboard_2', list(unit.get_state().values()))
+    socketio.emit('update_dashboard_2', organization.get_state())
     if request.sid in socket_balancer.socket_list \
         and not socket_balancer.while_started:
         while True:
@@ -41,7 +41,7 @@ def send_message(data):
                         'pin_code': 'None'
                     }
             socketio.emit('update_dashboard_1', json_info)
-            time.sleep(0.5)
+            time.sleep(1)
 
 @socketio.on('form_data_in')
 def handle_form_in(client_data):
@@ -85,7 +85,7 @@ def handle_form_in(client_data):
             f"[{client_data['unit']}] "\
             f"{current_user.username} entered correct pin-code!")
         current_unit.door.open()
-        socketio.emit('update_dashboard_2', list(current_unit.get_state().values()))
+        socketio.emit('update_dashboard_2', organization.get_state())
         current_unit.door.close()                       
 
     except DoorError as error:
@@ -109,7 +109,7 @@ def handle_form_out(client_data):
             'update_log', 
             f"[{client_data['unit']}] "\
             f"{current_user.username} is out from room!")
-        socketio.emit('update_dashboard_2', list(current_unit.get_state().values()))
+        socketio.emit('update_dashboard_2', organization.get_state())
         current_unit.door.close()
     except DoorError as error:
         socketio.emit('send_fail_message', error.reason)

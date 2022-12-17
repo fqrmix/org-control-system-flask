@@ -5,7 +5,6 @@ import face_recognition
 from imutils import paths
 from .camera import Camera
 
-
 main_camera = Camera()
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -56,9 +55,9 @@ known_face_ids = data['ids']
 name_list = {
     0: "Unknown person",
     1: "Dima Golovin",
-    2: "Roma Kulakov",
-    3: "Semen Sergeev",
-    4: "Nikita Vlasjuk",
-    5: "Sasha Vorontsov",
+    2: "Semen Sergeev",
+    3: "Vyacheslav Sokolov",
+    4: "",
+    5: "",
     6: "No one"
 }
