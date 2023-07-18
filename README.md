@@ -1,3 +1,18 @@
+# Краткое описание
+Проект, релизованный в рамках ВКР.
+# Стэк
+```
+Flask
+Flask-SocketIO
+Flask-SQLAlchemy
+Flask-WTF
+
+Инструменты для классификации лиц:
+face-recognition 1.3.0 (HOG + SVM [11])
+opencv-python 4.6.0.66
+dlib 19.24.0 
+```
+# Файловая структура проекта
 ```
 ├── instance
 │   └── main.db
@@ -53,3 +68,7 @@
 ├── run_server.sh
 └── runner.py
 ```
+# Схема взаимодействия компонентов в системе
+![image](https://github.com/fqrmix/org-control-system-flask/assets/90894198/386b82ba-6020-48c6-a59f-61424dcea2a6)
+# Схема взаимодействия backend'a и модуля camera.py
+![image](https://github.com/fqrmix/org-control-system-flask/assets/90894198/2643c448-8a85-43a2-8a4e-6d5413e39c26)
